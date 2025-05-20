@@ -1,3 +1,16 @@
+---
+title: Synopsis Scorer
+emoji: 📘
+colorFrom: blue
+colorTo: indigo
+sdk: streamlit
+sdk_version: 1.31.0
+app_file: app.py
+pinned: false
+---
+
+Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
+
 # Synopsis Scorer with Privacy Protection
 
 This application evaluates the quality of text synopses against their source content while maintaining privacy through robust text anonymization techniques.
@@ -14,8 +27,8 @@ This application evaluates the quality of text synopses against their source con
 ### Prerequisites
 
 - Python 3.8+
-- At least 4GB RAM (recommended for LLM inference)
-- 4GB disk space
+- At least 8GB RAM (recommended for LLM inference)
+- 2GB disk space
 
 ### Installation
 
@@ -42,12 +55,8 @@ This application evaluates the quality of text synopses against their source con
    ```
 
 5. Download the Gemma model:
-   The application will automatically download the quantized Gemma model on first run, or you can manually download it:
-   ```
-   mkdir -p models
+   The application will automatically download the quantized Gemma model on first run
 
-   Download the model from this url:  https://huggingface.co/google/gemma-3-4b-it-qat-q4_0-gguf/resolve/main/gemma-3-4b-it-q4_0.gguf and place it in "models" folder.
-   ```
 
 ### Running the Application
 
@@ -82,5 +91,5 @@ synopsis-scorer/
 ├── README.md               # This documentation
 ├── .streamlit/
 │   └── secrets.toml        # Configuration secrets
-└── models/                 # Downloaded LLM models
 ```
+
