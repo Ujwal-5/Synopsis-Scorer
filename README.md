@@ -1,16 +1,3 @@
----
-title: Synopsis Scorer
-emoji: 📘
-colorFrom: blue
-colorTo: indigo
-sdk: streamlit
-sdk_version: 1.31.0
-app_file: app.py
-pinned: false
----
-
-Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
-
 # Synopsis Scorer with Privacy Protection
 
 This application evaluates the quality of text synopses against their source content while maintaining privacy through robust text anonymization techniques.
@@ -28,7 +15,7 @@ This application evaluates the quality of text synopses against their source con
 
 - Python 3.8+
 - At least 8GB RAM (recommended for LLM inference)
-- 2GB disk space
+- 5GB disk space
 
 ### Installation
 
