@@ -2,6 +2,9 @@ import streamlit as st
 from utils import extract_text, anonymize_text, score_synopsis
 from llama_cpp import Llama
 import os
+from huggingface_hub import snapshot_download
+from huggingface_hub import login
+
 
 st.set_page_config(page_title="Synopsis Scorer", layout="wide")
 
@@ -18,6 +21,19 @@ if not hf_token and not os.path.exists("models/gemma-3-4b-it-q4_0.gguf"):
     st.warning("Hugging Face token not found. Please add it to your secrets or environment variables.")
     hf_token = st.text_input("Enter your Hugging Face token:", type="password")
 
+login(hf_token)
+
+print("Looking for model at:", os.path.abspath("gemma-3-4b-it-q4_0.gguf"))
+
+# Choose a directory to store the model
+model_dir = "./gemma-3-4b-it-qat-q4_0"
+
+# Download the GGUF model
+snapshot_download(
+    repo_id="google/gemma-3-4b-it-qat-q4_0-gguf",
+    local_dir=model_dir,
+    local_dir_use_symlinks=False  # Ensures real files are written, not symlinks
+)
 
 # --- File Upload ---
 st.title("📘 Synopsis Scorer with Privacy Protection")
@@ -40,15 +56,22 @@ if article_file and synopsis_file:
             # Anonymization
             article_anon = anonymize_text(article)
             synopsis_anon = anonymize_text(synopsis)
+            # Estimate n_ctx
+            total_text = article_anon + synopsis_anon
+            estimated_tokens = int(len(total_text)/3.5)
+            n_ctx = estimated_tokens + 500
             
-            article_limit = 350000 # max_chars = 128000 * 3.5 (approx_chars_per_token) ≈ 448,000 characters;  448,000 - 98000(space for synopsis) = 350000
+            article_limit = 80000 # max_article_chars = 32,000 tokens×3.5 (approx_chars_per_token)≈112,000 characters; 112,000 - 32000(space for synopsis)= 80000
             
             # LLM feedback
             try:
-                llm = Llama.from_pretrained(
-                    repo_id="google/gemma-3-4b-it-qat-q4_0-gguf",
-                    filename="gemma-3-4b-it-q4_0.gguf"
+                llm = Llama(
+                model_path="./gemma-3-4b-it-qat-q4_0/gemma-3-4b-it-q4_0.gguf",
+                    n_ctx=n_ctx,
+                    n_threads=2,
+                    n_batch=128
                 )
+                
                 prompt = (
                     "You are an expert writing evaluator. The user has uploaded two text documents: "
                     "1) a short synopsis, and 2) a longer article (source content). "
