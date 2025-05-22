@@ -9,6 +9,10 @@ This application evaluates the quality of text synopses against their source con
 - **LLM-Powered Feedback**: Provides qualitative feedback using Gemma 3 4B LLM
 - **User-Friendly Interface**: Built with Streamlit for easy interaction
 
+## Usage
+- **Deployed on Hugging Face Spaces:** [Click here to use the app](https://huggingface.co/spaces/ujwal55/Synopsis-Scorer)
+
+
 ## Setup Instructions
 
 ### Prerequisites
